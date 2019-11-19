@@ -1,6 +1,16 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![npm version](https://badge.fury.io/js/arduino-create-agent-js-client.svg)](https://badge.fury.io/js/arduino-create-agent-js-client)
 
+My stuff Nov 18th, 2019
+
+
+```
+https://cdn.jsdelivr.net/npm/arduino-create-agent-js-client@2.3.1/dist/create-plugin.js
+
+```
+
+
+
 my site   https://hpssjellis.github.io/arduino-create-agent-js-client/
 
 
