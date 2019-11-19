@@ -1,36 +1,15 @@
-<script>
 
-import Daemon from 'arduino-create-agent-js-client';
+<script src="https://cdn.jsdelivr.net/npm/arduino-create-agent-js-client@2.3.1/dist/create-plugin.js"> </script> 
 
-const daemon = new Daemon('https://builder.arduino.cc/v3/boards');
 
-daemon.agentFound.subscribe(status => {
-  // true / false
-});
 
-daemon.channelOpenStatus.subscribe(status => {
-  // true / false
-});
 
-daemon.error.subscribe(err => {
-  // handle err
-});
+<input type=button value="check status" onclick="{
+   document.getElementById('myDiv01').innerHTML = 'wow'                                              
+                                                 alert()
+}">
 
-// List available devices (serial/network)
-daemon.devicesList.subscribe(({serial, network}) => {
-  const  serialDevices = serial;
-  const  networkDevices = network;
-});
 
-// Open serial monitor
-daemon.openSerialMonitor('port-name');
+<div id="myDiv01">...</div>
 
-// Read from serial monitor
-daemon.serialMonitorMessages.subscribe(message => {
-  console.log(message);
-});
 
-// Close serial monitor
-daemon.closeSerialMonitor('port-name');
-
-</script>
