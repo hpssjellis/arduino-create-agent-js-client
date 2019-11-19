@@ -1,6 +1,56 @@
+import Daemon from 'arduino-create-agent-js-client';
 
+const daemon = new Daemon('https://builder.arduino.cc/v3/boards');
 
+daemon.agentFound.subscribe(status => {
+  // true / false
+});
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script> 
+daemon.channelOpenStatus.subscribe(status => {
+  // true / false
+});
+
+daemon.error.subscribe(err => {
+  // handle err
+});
+
+// List available devices (serial/network)
+daemon.devicesList.subscribe(({serial, network}) => {
+  const  serialDevices = serial;
+  const  networkDevices = network;
+});
+
+// Open serial monitor
+daemon.openSerialMonitor('port-name');
+
+// Read from serial monitor
+daemon.serialMonitorMessages.subscribe(message => {
+  console.log(message);
+});
+
+// Write to serial monitor
+daemon.writeSerial('port-name', 'message');
+
+// Close serial monitor
+daemon.closeSerialMonitor('port-name');
+
+// Upload sketch on serial target (desktop agent and chrome app)
+daemon.uploadSerial(target, sketchName, compilationResult, verbose);
+
+// Upload sketch on network target (daesktop agent only)
+daemon.uploadNetwork(target, sketchName, compilationResult);
+
+// Upload progress
+daemon.uploading.subscribe(upload => {
+  console.log(status);
+});
+
+// Download tool
+daemon.downloadTool('toolname', 'toolversion' 'packageName', 'replacement');
+
+// Download status
+daemon.downloading.subscribe(download => {
+  console.log(download);
+});
 
 
