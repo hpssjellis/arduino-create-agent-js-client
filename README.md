@@ -4,6 +4,23 @@ My gitpod link at
 
 https://gitpod.io/#github.com/hpssjellis/arduino-create-agent-js-client
 
+
+
+```
+npm install
+
+npm run dev
+
+
+```
+Probably need to find your arduino-create-agent plugin and change the 
+
+```
+#origins = http://local.arduino.cc:8000
+origins = https://8000-d33245-lots-of-numbers-92345.ws-us02.gitpod.io/
+
+```
+
 .
 
 
