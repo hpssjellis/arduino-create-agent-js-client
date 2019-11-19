@@ -5,6 +5,29 @@
 
 
 <input type=button value="check status" onclick="{
+                                                 
+  const daemon = new Daemon('https://builder.arduino.cc/v3/boards');
+
+daemon.agentFound.subscribe(status => {
+  // true / false
+});
+
+daemon.channelOpenStatus.subscribe(status => {
+  // true / false
+});
+
+daemon.error.subscribe(err => {
+  // handle err
+});
+
+// List available devices (serial/network)
+daemon.devicesList.subscribe(({serial, network}) => {
+  const  serialDevices = serial;
+  const  networkDevices = network;
+});                                               
+                                                 
+                                                 
+                                                 
    document.getElementById('myDiv01').innerHTML = 'wow'                                                                                             
 }">
 
