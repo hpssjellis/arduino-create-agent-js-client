@@ -28,29 +28,6 @@ daemon.serialMonitorMessages.subscribe(message => {
   console.log(message);
 });
 
-// Write to serial monitor
-daemon.writeSerial('port-name', 'message');
-
 // Close serial monitor
 daemon.closeSerialMonitor('port-name');
-
-// Upload sketch on serial target (desktop agent and chrome app)
-daemon.uploadSerial(target, sketchName, compilationResult, verbose);
-
-// Upload sketch on network target (daesktop agent only)
-daemon.uploadNetwork(target, sketchName, compilationResult);
-
-// Upload progress
-daemon.uploading.subscribe(upload => {
-  console.log(status);
-});
-
-// Download tool
-daemon.downloadTool('toolname', 'toolversion' 'packageName', 'replacement');
-
-// Download status
-daemon.downloading.subscribe(download => {
-  console.log(download);
-});
-
 
