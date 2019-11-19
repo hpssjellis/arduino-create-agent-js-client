@@ -29,7 +29,8 @@ Probably need to find your arduino-create-agent plugin and change the
 
 ```
 #origins = http://local.arduino.cc:8000
-origins = https://8000-d33245-lots-of-numbers-92345.ws-us02.gitpod.io/
+origins = http://127.0.0.1:8991
+#origins = http://127.0.0.1:8000
 
 ```
 
