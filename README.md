@@ -32,6 +32,11 @@ Probably need to find your arduino-create-agent plugin and change the
 origins = http://127.0.0.1:8991
 #origins = http://127.0.0.1:8000
 
+
+
+
+
+nano33ble     is called    arduino:mbed:nano33ble
 ```
 
 .
