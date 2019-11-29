@@ -41,7 +41,8 @@ const PROTOCOL = {
 const LOOPBACK_ADDRESS = `${PROTOCOL.HTTP}://127.0.0.1`;
 const LOOPBACK_HOST = `${PROTOCOL.HTTPS}://localhost`;
 const LOOKUP_PORT_START = 8991;
-const LOOKUP_PORT_END = 9000;
+//const LOOKUP_PORT_END = 9000;
+const LOOKUP_PORT_END = 8991;
 let orderedPluginAddresses = [LOOPBACK_ADDRESS, LOOPBACK_HOST];
 let driversRequested = false;
 

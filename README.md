@@ -1,3 +1,53 @@
+By rocksetta Nov 19, 2019
+
+My gitpod link at 
+
+https://gitpod.io/#github.com/hpssjellis/arduino-create-agent-js-client
+
+
+
+```
+npm install
+
+npm run dev
+
+
+```
+
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io#snapshot/b2f8f99c-2533-437d-a2a3-b3a817b10f76)
+
+just run
+
+```
+npm run dev
+
+```
+
+
+Probably need to find your arduino-create-agent plugin and change the 
+
+```
+#origins = http://local.arduino.cc:8000
+origins = http://127.0.0.1:8991
+#origins = http://127.0.0.1:8000
+
+
+
+
+
+nano33ble     is called    arduino:mbed:nano33ble
+```
+
+.
+
+
+.
+
+
+
+
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![npm version](https://badge.fury.io/js/arduino-create-agent-js-client.svg)](https://badge.fury.io/js/arduino-create-agent-js-client)
 
@@ -127,3 +177,4 @@ add `origins = http://localhost:8000` on your agent config.ini file
 
 - On macOs ~/Applications/ArduinoCreateAgent-1.1/ArduinoCreateAgent.app/Contents/MacOS/config.ini
 - On Linux ~/ArduinoCreateAgent-1.1/config.ini
+- On Windows C:\Users\[your user]\AppData\Roaming\ArduinoCreateAgent-1.1
