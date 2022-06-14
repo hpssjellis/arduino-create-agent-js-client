@@ -50,6 +50,7 @@ export default class Daemon {
     this.appMessages = new Subject();
     this.serialMonitorOpened = new BehaviorSubject(false);
     this.serialMonitorMessages = new Subject();
+    this.serialMonitorMessagesWithPort = new Subject();
     this.uploading = new BehaviorSubject({ status: this.UPLOAD_NOPE });
     this.uploadingDone = this.uploading.pipe(filter(upload => upload.status === this.UPLOAD_DONE))
       .pipe(first())
@@ -131,7 +132,8 @@ export default class Daemon {
       .then(uploadCommandInfo => {
         const projectNameIndex = uploadCommandInfo.commandline.indexOf('{build.project_name}');
         let ext = uploadCommandInfo.commandline.substring(projectNameIndex + 21, projectNameIndex + 24);
-        if (!ext || !compilationResult[ext]) {
+        const data = compilationResult[ext] || compilationResult.bin;
+        if (!ext || !data) {
           console.log('we received a faulty ext property, defaulting to .bin');
           ext = 'bin';
         }
@@ -140,8 +142,8 @@ export default class Daemon {
           ...target,
           commandline: uploadCommandInfo.commandline,
           filename: `${sketchName}.${ext}`,
-          hex: compilationResult[ext], // For desktop agent
-          data: compilationResult[ext] // For chromeOS plugin, consider to align this
+          hex: data, // For desktop agent
+          data // For chromeOS plugin, consider to align this
         };
 
         this.uploadingDone.subscribe(() => {
@@ -169,7 +171,8 @@ export default class Daemon {
             }
           });
         });
-        this._upload(uploadPayload, uploadCommandInfo);
+        const files = [...(uploadCommandInfo.files || []), ...(compilationResult.files || [])];
+        this._upload(uploadPayload, { ...uploadCommandInfo, files });
       });
   }
 

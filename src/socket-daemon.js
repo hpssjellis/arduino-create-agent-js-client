@@ -111,7 +111,10 @@ export default class SocketDaemon extends Daemon {
           this.agentInfo = data;
           this.agentFound.next(true);
         }))
-        .catch(() => timer(POLLING_INTERVAL).subscribe(() => this.findAgent()));
+        .catch(() => timer(POLLING_INTERVAL).subscribe(() => {
+          this.pluginURL = null;
+          this.findAgent();
+        }));
       return;
     }
 
@@ -163,7 +166,7 @@ export default class SocketDaemon extends Daemon {
         if (found) {
           return fetch('https://s3.amazonaws.com/arduino-create-static/agent-metadata/agent-version.json')
             .then(response => response.json().then(data => {
-              if (this.agentInfo.version && (semVerCompare(this.agentInfo.version, data.Version) >= 0 || this.agentInfo.version.indexOf('dev') !== -1)) {
+              if (this.agentInfo.version && (semVerCompare(this.agentInfo.version, data.Version) === 0 || this.agentInfo.version.indexOf('dev') !== -1 || this.agentInfo.version.indexOf('rc') !== -1)) {
                 return this.agentInfo;
               }
 
@@ -211,6 +214,7 @@ export default class SocketDaemon extends Daemon {
         this.downloadTool('windows-drivers', 'latest', 'arduino');
         this.downloadTool('bossac', '1.7.0', 'arduino');
         this.downloadTool('fwupdater', 'latest', 'arduino');
+        this.downloadTool('rp2040tools', 'latest', 'arduino');
         driversRequested = false;
       }
 
@@ -238,6 +242,7 @@ export default class SocketDaemon extends Daemon {
     // Serial monitor message
     if (message.D) {
       this.serialMonitorMessages.next(message.D);
+      this.serialMonitorMessagesWithPort.next(message);
     }
 
     if (message.ProgrammerStatus) {

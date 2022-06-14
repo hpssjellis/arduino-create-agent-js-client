@@ -70,7 +70,23 @@ https://gitpod.io/#github.com/hpssjellis/arduino-create-agent-js-client
 
 
 # arduino-create-agent-js-client
-JS module providing discovery of the [Arduino Create Plugin](https://github.com/arduino/arduino-create-agent) and communication with it
+JS module providing discovery of the [Arduino Create Agent](https://github.com/arduino/arduino-create-agent) and communication with it
+
+## Changelog
+[2.9.0] - 2022-06-06
+
+### Added
+- Added support for "Arduino RP2040 Connect" board
+### Changed
+- Improved support for Chrome's Web Serial API on ChromeOS. Other operating systems should not be affected.
+- Simplified the communication with the Web Serial API via a messaging system which simulates
+  the [postMessage](https://developer.chrome.com/docs/extensions/reference/runtime/#method-Port-postMessage) function available in the Chrome App Daemon (see `chrome-app-daemon.js`).
+
+
+[2.8.0] - 2022-03-21
+### Added
+- Added support (still in Beta) for Chrome's Web Serial API on ChromeOS.
+  Other operating systems should not be affected.
 
 ## Installation
 
@@ -106,9 +122,20 @@ daemon.devicesList.subscribe(({serial, network}) => {
 // Open serial monitor
 daemon.openSerialMonitor('port-name');
 
-// Read from serial monitor
+// Read from serial monitor (ouputs string)
 daemon.serialMonitorMessages.subscribe(message => {
   console.log(message);
+});
+
+// Read from serial monitor, output object with source port name
+/*
+  {
+    "P": "dev/ttyACM0",
+    "D":"output text here\r\n"
+  }
+*/
+daemon.serialMonitorMessagesWithPort.subscribe(messageObj => {
+  console.log(messageObj);
 });
 
 // Write to serial monitor
@@ -140,7 +167,7 @@ daemon.downloading.subscribe(download => {
 
 ## Version 2
 
-Version 2 of the arduino-create-agent aims to provide a cleaner api based on promises. 
+Version 2 of the arduino-create-agent aims to provide a cleaner api based on promises.
 It will remain confined to a v2 property on the daemon object until it will be stable.
 At the moment it only supports tool management.
 
@@ -175,6 +202,6 @@ To enable communication between your [local installation](http://localhost:8000/
 add `origins = http://localhost:8000` on your agent config.ini file
 (if you are using https, add `origins = https://localhost:8000`).
 
-- On macOs ~/Applications/ArduinoCreateAgent-1.1/ArduinoCreateAgent.app/Contents/MacOS/config.ini
-- On Linux ~/ArduinoCreateAgent-1.1/config.ini
-- On Windows C:\Users\[your user]\AppData\Roaming\ArduinoCreateAgent-1.1
+- On macOs ~/Applications/ArduinoCreateAgent/ArduinoCreateAgent.app/Contents/MacOS/config.ini
+- On Linux ~/ArduinoCreateAgent/config.ini
+- On Windows C:\Users\\[your user]\AppData\Roaming\ArduinoCreateAgent
