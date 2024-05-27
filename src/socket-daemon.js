@@ -31,7 +31,6 @@ import V2 from './socket-daemon.v2';
 // Required agent version
 const browser = detect();
 const POLLING_INTERVAL = 3500;
-const UPLOAD_DONE_TIMER = 5000;
 
 const PROTOCOL = {
   HTTP: 'http',
@@ -47,6 +46,7 @@ let orderedPluginAddresses = [LOOPBACK_ADDRESS, LOOPBACK_HOST];
 let driversRequested = false;
 
 const CANT_FIND_AGENT_MESSAGE = 'Arduino Create Agent cannot be found';
+const UPLOAD_DONE_TIMER = 10000;
 
 let updateAttempts = 0;
 
@@ -164,7 +164,7 @@ export default class SocketDaemon extends Daemon {
         });
 
         if (found) {
-          return fetch('https://s3.amazonaws.com/arduino-create-static/agent-metadata/agent-version.json')
+          return fetch('https://downloads.arduino.cc/agent-metadata/agent-version.json')
             .then(response => response.json().then(data => {
               if (this.agentInfo.version && (semVerCompare(this.agentInfo.version, data.Version) === 0 || this.agentInfo.version.indexOf('dev') !== -1 || this.agentInfo.version.indexOf('rc') !== -1)) {
                 return this.agentInfo;
@@ -213,7 +213,7 @@ export default class SocketDaemon extends Daemon {
       if (!driversRequested) {
         this.downloadTool('windows-drivers', 'latest', 'arduino');
         this.downloadTool('bossac', '1.7.0', 'arduino');
-        this.downloadTool('fwupdater', 'latest', 'arduino');
+        this.downloadTool('arduino-fwuploader', 'latest', 'arduino');
         this.downloadTool('rp2040tools', 'latest', 'arduino');
         driversRequested = false;
       }
@@ -388,6 +388,7 @@ export default class SocketDaemon extends Daemon {
       // After the upload is completed the port goes down for a while, so we have to wait a few seconds
       return timer(UPLOAD_DONE_TIMER).subscribe(() => this.uploading.next({ status: this.UPLOAD_DONE, msg: message.Flash }));
     }
+
     switch (message.ProgrammerStatus) {
       case 'Starting':
         this.uploading.next({ status: this.UPLOAD_IN_PROGRESS, msg: `Programming with: ${message.Cmd}` });

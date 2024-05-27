@@ -115,8 +115,12 @@ export default class Daemon {
    * @param {string} sketchName
    * @param {Object} compilationResult
    * @param {boolean} verbose
+   * @param {any[]} dialogCustomizations Optional - Used in Web Serial API to customize the permission dialogs.
+   *        It's an array because the Web Serial API library can use more than one dialog, e.g. one to
+   *        ask permission and one to give instruction to save an UF2 file.
+   *        It's called 'customizations' because the library already provides a basic non-styled dialog.
    */
-  uploadSerial(target, sketchName, compilationResult, verbose = true) {
+  uploadSerial(target, sketchName, compilationResult, verbose = true, dialogCustomizations) {
     this.uploadingPort = target.port;
     this.uploading.next({ status: this.UPLOAD_IN_PROGRESS, msg: 'Upload started' });
     this.serialDevicesBeforeUpload = this.devicesList.getValue().serial;
@@ -130,8 +134,7 @@ export default class Daemon {
     })
       .then(result => result.json())
       .then(uploadCommandInfo => {
-        const projectNameIndex = uploadCommandInfo.commandline.indexOf('{build.project_name}');
-        let ext = uploadCommandInfo.commandline.substring(projectNameIndex + 21, projectNameIndex + 24);
+        let ext = Daemon._extractExtensionFromCommandline(uploadCommandInfo.commandline);
         const data = compilationResult[ext] || compilationResult.bin;
         if (!ext || !data) {
           console.log('we received a faulty ext property, defaulting to .bin');
@@ -143,7 +146,8 @@ export default class Daemon {
           commandline: uploadCommandInfo.commandline,
           filename: `${sketchName}.${ext}`,
           hex: data, // For desktop agent
-          data // For chromeOS plugin, consider to align this
+          data, // For chromeOS plugin, consider to align this
+          dialogCustomizations // used only in Web Serial API uploader
         };
 
         this.uploadingDone.subscribe(() => {
@@ -210,5 +214,14 @@ export default class Daemon {
       timer(1000).subscribe(() => this.closeSerialMonitor(port));
     });
     this.openSerialMonitor(port, 1200);
+  }
+
+  static _extractExtensionFromCommandline(commandline) {
+    const rx = /\{build\.project_name\}\.(\w\w\w)\b/g;
+    const arr = rx.exec(commandline);
+    if (arr && arr.length > 0) {
+      return arr[1];
+    }
+    return null;
   }
 }
